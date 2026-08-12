@@ -277,33 +277,52 @@ async function findFrame(basePath, seriesNum, frameNum) {
   return results.find(Boolean) || null;
 }
 
-// Fires every candidate probe at once instead of awaiting them one at a time —
-// on a real host (unlike localhost) each request has real network latency, so
-// checking 01, 02, 03... sequentially made discovery visibly slow. Probing in
-// parallel turns "N round trips" into "one round trip", then the contiguous
-// run from the start (01, 02, 03...) determines where the real sequence ends.
-async function discoverContiguous(maxCount, prober) {
-  const probes = [];
-  for (let i = 1; i <= maxCount; i++) probes.push(prober(i));
-  const results = await Promise.all(probes);
+// Probes in small windows instead of one shot up to maxCount — firing every
+// slot up front (e.g. up to 30 frames x 4 extensions each) meant almost all of
+// those requests were guaranteed 404s past the real content, and once probes
+// are concurrency-limited (see limitProbe above) that waste turns into real
+// waiting time. Checking a window at a time and stopping as soon as one comes
+// back with a gap keeps requests roughly proportional to actual content.
+async function discoverContiguous(maxCount, prober, windowSize = 6) {
   const items = [];
-  for (const item of results) {
-    if (!item) break;
-    items.push(item);
+  let start = 1;
+  while (start <= maxCount) {
+    const end = Math.min(start + windowSize - 1, maxCount);
+    const batch = [];
+    for (let i = start; i <= end; i++) batch.push(prober(i));
+    const results = await Promise.all(batch);
+    let hitGap = false;
+    for (const item of results) {
+      if (!item) {
+        hitGap = true;
+        break;
+      }
+      items.push(item);
+    }
+    if (hitGap) break;
+    start = end + 1;
   }
   return items;
 }
 
-async function discoverSeries(basePath, maxSeries = 15, maxFrames = 30) {
-  const seriesResults = await Promise.all(
-    Array.from({ length: maxSeries }, (_, i) =>
-      discoverContiguous(maxFrames, (f) => findFrame(basePath, i + 1, f))
-    )
-  );
+async function discoverSeries(basePath, maxSeries = 15, maxFrames = 30, windowSize = 3) {
   const series = [];
-  for (const frames of seriesResults) {
-    if (frames.length === 0) break;
-    series.push(frames);
+  let start = 1;
+  while (start <= maxSeries) {
+    const end = Math.min(start + windowSize - 1, maxSeries);
+    const batch = [];
+    for (let s = start; s <= end; s++) batch.push(discoverContiguous(maxFrames, (f) => findFrame(basePath, s, f)));
+    const results = await Promise.all(batch);
+    let hitEmpty = false;
+    for (const frames of results) {
+      if (frames.length === 0) {
+        hitEmpty = true;
+        break;
+      }
+      series.push(frames);
+    }
+    if (hitEmpty) break;
+    start = end + 1;
   }
   return series;
 }
