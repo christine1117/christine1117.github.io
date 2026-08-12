@@ -135,7 +135,7 @@ h1, h2, h3 {
   position: absolute;
   font-family: "Newsreader", serif;
   font-style: italic;
-  font-size: 0.85rem;
+  font-size: 1.05rem;
   color: var(--ink-faint);
   opacity: 0;
   transform: translateY(10px);

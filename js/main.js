@@ -237,23 +237,37 @@ async function probeVideo(url) {
 
 async function findFrame(basePath, seriesNum, frameNum) {
   const num = String(frameNum).padStart(2, "0");
-  for (const ext of IMAGE_EXTENSIONS) {
-    const url = `${basePath}series-${seriesNum}/${num}.${ext}`;
-    const frame = await probeImage(url);
-    if (frame) return frame;
+  const results = await Promise.all(
+    IMAGE_EXTENSIONS.map((ext) => probeImage(`${basePath}series-${seriesNum}/${num}.${ext}`))
+  );
+  return results.find(Boolean) || null;
+}
+
+// Fires every candidate probe at once instead of awaiting them one at a time —
+// on a real host (unlike localhost) each request has real network latency, so
+// checking 01, 02, 03... sequentially made discovery visibly slow. Probing in
+// parallel turns "N round trips" into "one round trip", then the contiguous
+// run from the start (01, 02, 03...) determines where the real sequence ends.
+async function discoverContiguous(maxCount, prober) {
+  const probes = [];
+  for (let i = 1; i <= maxCount; i++) probes.push(prober(i));
+  const results = await Promise.all(probes);
+  const items = [];
+  for (const item of results) {
+    if (!item) break;
+    items.push(item);
   }
-  return null;
+  return items;
 }
 
 async function discoverSeries(basePath, maxSeries = 15, maxFrames = 30) {
+  const seriesResults = await Promise.all(
+    Array.from({ length: maxSeries }, (_, i) =>
+      discoverContiguous(maxFrames, (f) => findFrame(basePath, i + 1, f))
+    )
+  );
   const series = [];
-  for (let s = 1; s <= maxSeries; s++) {
-    const frames = [];
-    for (let f = 1; f <= maxFrames; f++) {
-      const frame = await findFrame(basePath, s, f);
-      if (!frame) break;
-      frames.push(frame);
-    }
+  for (const frames of seriesResults) {
     if (frames.length === 0) break;
     series.push(frames);
   }
@@ -315,25 +329,19 @@ document.querySelectorAll(".auto-gallery").forEach(loadAutoGallery);
 // folder. Each number can be either an image or a video.
 async function findFlatFrame(basePath, frameNum) {
   const num = String(frameNum).padStart(2, "0");
-  for (const ext of IMAGE_EXTENSIONS) {
-    const frame = await probeImage(`${basePath}${num}.${ext}`);
-    if (frame) return frame;
-  }
-  for (const ext of VIDEO_EXTENSIONS) {
-    const frame = await probeVideo(`${basePath}${num}.${ext}`);
-    if (frame) return frame;
-  }
-  return null;
+  const imageResults = await Promise.all(
+    IMAGE_EXTENSIONS.map((ext) => probeImage(`${basePath}${num}.${ext}`))
+  );
+  const imageMatch = imageResults.find(Boolean);
+  if (imageMatch) return imageMatch;
+  const videoResults = await Promise.all(
+    VIDEO_EXTENSIONS.map((ext) => probeVideo(`${basePath}${num}.${ext}`))
+  );
+  return videoResults.find(Boolean) || null;
 }
 
 async function discoverFlatImages(basePath, maxFrames = 60) {
-  const images = [];
-  for (let f = 1; f <= maxFrames; f++) {
-    const frame = await findFlatFrame(basePath, f);
-    if (!frame) break;
-    images.push(frame);
-  }
-  return images;
+  return discoverContiguous(maxFrames, (f) => findFlatFrame(basePath, f));
 }
 
 function buildFlatTile(frame, index, uniformCrop) {
