@@ -293,6 +293,15 @@ async function findFrame(basePath, seriesNum, frameNum) {
   return results.find(Boolean) || null;
 }
 
+// Prefer the pre-generated manifest (js/gallery-manifest.js, built by
+// scripts/generate_manifest.py) when present — it names the exact files that
+// exist, so the page can skip probing entirely and show tiles immediately.
+// Falls back to live probing below if the manifest is missing or stale (e.g.
+// a photo was added without re-running the generator).
+function manifestFor(basePath) {
+  return window.GALLERY_MANIFEST && window.GALLERY_MANIFEST[basePath];
+}
+
 // Probes in small windows instead of one shot up to maxCount — firing every
 // slot up front (e.g. up to 30 frames x 4 extensions each) meant almost all of
 // those requests were guaranteed 404s past the real content, and once probes
@@ -322,6 +331,11 @@ async function discoverContiguous(maxCount, prober, windowSize = 6) {
 }
 
 async function discoverSeries(basePath, maxSeries = 15, maxFrames = 30, windowSize = 3) {
+  const manifest = manifestFor(basePath);
+  if (manifest && manifest.type === "series") {
+    return manifest.series.map((urls) => urls.map((url) => ({ url })));
+  }
+
   const series = [];
   let start = 1;
   while (start <= maxSeries) {
@@ -412,6 +426,10 @@ async function findFlatFrame(basePath, frameNum) {
 }
 
 async function discoverFlatImages(basePath, maxFrames = 60) {
+  const manifest = manifestFor(basePath);
+  if (manifest && manifest.type === "flat") {
+    return manifest.items;
+  }
   return discoverContiguous(maxFrames, (f) => findFlatFrame(basePath, f));
 }
 
