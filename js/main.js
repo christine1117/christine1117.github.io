@@ -195,13 +195,45 @@ function addSeriesNav(figure, strip, frameCount) {
 const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "webp"];
 const VIDEO_EXTENSIONS = ["mp4", "mov", "webm"];
 
+// Caps how many probe requests are actually in flight at once. Discovery logic
+// below still "asks" for everything in parallel (all series, all frames, all
+// extensions), but firing that literally all at once — hundreds to low
+// thousands of requests in a single burst — got flagged as abuse by GitHub
+// Pages' host and started returning rate-limit errors. Queuing through a
+// shared limiter keeps real concurrency near what a browser would use anyway
+// (~6 connections per host) while still avoiding the old fully-sequential path.
+function createLimiter(maxConcurrent) {
+  let active = 0;
+  const queue = [];
+  function next() {
+    if (active >= maxConcurrent || queue.length === 0) return;
+    active++;
+    const { fn, resolve } = queue.shift();
+    fn().then((result) => {
+      active--;
+      resolve(result);
+      next();
+    });
+  }
+  return function run(fn) {
+    return new Promise((resolve) => {
+      queue.push({ fn, resolve });
+      next();
+    });
+  };
+}
+const limitProbe = createLimiter(6);
+
 function probeImage(url) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => resolve({ url, width: img.naturalWidth, height: img.naturalHeight, isVideo: false });
-    img.onerror = () => resolve(null);
-    img.src = url;
-  });
+  return limitProbe(
+    () =>
+      new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve({ url, width: img.naturalWidth, height: img.naturalHeight, isVideo: false });
+        img.onerror = () => resolve(null);
+        img.src = url;
+      })
+  );
 }
 
 // Existence-check for video files. fetch() is the reliable path (fast, and a
@@ -210,28 +242,30 @@ function probeImage(url) {
 // falls back to a <video> element probe instead, capped with a timeout so an
 // unresponsive one can't stall discovery. Width/height aren't needed either
 // way: video tiles use a uniform crop or fall back to a default aspect-ratio.
-async function probeVideo(url) {
-  if (location.protocol !== "file:") {
-    try {
-      const res = await fetch(url, { method: "HEAD" });
-      return res.ok ? { url, width: 0, height: 0, isVideo: true } : null;
-    } catch {
-      return null;
+function probeVideo(url) {
+  return limitProbe(async () => {
+    if (location.protocol !== "file:") {
+      try {
+        const res = await fetch(url, { method: "HEAD" });
+        return res.ok ? { url, width: 0, height: 0, isVideo: true } : null;
+      } catch {
+        return null;
+      }
     }
-  }
-  return new Promise((resolve) => {
-    const video = document.createElement("video");
-    video.preload = "metadata";
-    let settled = false;
-    const finish = (result) => {
-      if (settled) return;
-      settled = true;
-      resolve(result);
-    };
-    video.onloadedmetadata = () => finish({ url, width: video.videoWidth, height: video.videoHeight, isVideo: true });
-    video.onerror = () => finish(null);
-    setTimeout(() => finish(null), 3000);
-    video.src = url;
+    return new Promise((resolve) => {
+      const video = document.createElement("video");
+      video.preload = "metadata";
+      let settled = false;
+      const finish = (result) => {
+        if (settled) return;
+        settled = true;
+        resolve(result);
+      };
+      video.onloadedmetadata = () => finish({ url, width: video.videoWidth, height: video.videoHeight, isVideo: true });
+      video.onerror = () => finish(null);
+      setTimeout(() => finish(null), 3000);
+      video.src = url;
+    });
   });
 }
 
