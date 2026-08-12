@@ -199,9 +199,11 @@ const VIDEO_EXTENSIONS = ["mp4", "mov", "webm"];
 // below still "asks" for everything in parallel (all series, all frames, all
 // extensions), but firing that literally all at once — hundreds to low
 // thousands of requests in a single burst — got flagged as abuse by GitHub
-// Pages' host and started returning rate-limit errors. Queuing through a
-// shared limiter keeps real concurrency near what a browser would use anyway
-// (~6 connections per host) while still avoiding the old fully-sequential path.
+// Pages' host and started returning rate-limit errors. Now that discovery is
+// also windowed (see discoverContiguous below) total request volume is bounded
+// by actual content instead of the max range, so this can sit well above a
+// single browser connection's limit — GitHub Pages/Fastly multiplexes plenty
+// of concurrent requests fine, it was the raw burst size that got flagged.
 function createLimiter(maxConcurrent) {
   let active = 0;
   const queue = [];
@@ -222,7 +224,7 @@ function createLimiter(maxConcurrent) {
     });
   };
 }
-const limitProbe = createLimiter(6);
+const limitProbe = createLimiter(16);
 
 function probeImage(url) {
   return limitProbe(
