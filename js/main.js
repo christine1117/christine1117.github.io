@@ -226,16 +226,30 @@ function createLimiter(maxConcurrent) {
 }
 const limitProbe = createLimiter(16);
 
+// Existence-check only — deliberately doesn't use the pixel data. An earlier
+// version loaded the full image (new Image()) during discovery to also read
+// its dimensions, which meant every real photo was fully downloaded before a
+// single gallery tile could appear on screen. A HEAD request confirms
+// existence in a fraction of the bytes; the real <img> tags (added by
+// buildSeriesTile/buildFlatTile) do the actual full download when the browser
+// gets to them, and measure their own natural size once loaded.
 function probeImage(url) {
-  return limitProbe(
-    () =>
-      new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve({ url, width: img.naturalWidth, height: img.naturalHeight, isVideo: false });
-        img.onerror = () => resolve(null);
-        img.src = url;
-      })
-  );
+  return limitProbe(async () => {
+    if (location.protocol !== "file:") {
+      try {
+        const res = await fetch(url, { method: "HEAD" });
+        return res.ok ? { url, isVideo: false } : null;
+      } catch {
+        return null;
+      }
+    }
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve({ url, isVideo: false });
+      img.onerror = () => resolve(null);
+      img.src = url;
+    });
+  });
 }
 
 // Existence-check for video files. fetch() is the reliable path (fast, and a
@@ -333,13 +347,6 @@ function buildSeriesTile(seriesIndex, frames) {
   const figure = document.createElement("figure");
   figure.className = "series-tile";
 
-  // Size the tile to the cover photo's real orientation instead of forcing
-  // every photo into the same portrait crop — landscape shots stay landscape.
-  const cover = frames[0];
-  if (cover.width && cover.height) {
-    figure.style.aspectRatio = `${cover.width} / ${cover.height}`;
-  }
-
   const strip = document.createElement("div");
   strip.className = "series-strip";
   frames.forEach((frame, frameIndex) => {
@@ -347,6 +354,15 @@ function buildSeriesTile(seriesIndex, frames) {
     img.src = frame.url;
     img.loading = "lazy";
     img.alt = `Series ${seriesIndex}, frame ${frameIndex + 1}`;
+    // Size the tile to the cover photo's real orientation instead of forcing
+    // every photo into the same portrait crop — landscape shots stay landscape.
+    // Set once the actual image loads rather than from a pre-fetched probe,
+    // since discovery no longer downloads full images just to read dimensions.
+    if (frameIndex === 0) {
+      img.addEventListener("load", () => {
+        figure.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
+      });
+    }
     strip.appendChild(img);
   });
   figure.appendChild(strip);
@@ -416,8 +432,12 @@ function buildFlatTile(frame, index, uniformCrop) {
   }
   // Uniform-crop galleries (e.g. Film) crop every tile to the same ratio via CSS.
   // Everything else keeps each photo's own orientation instead of force-cropping it.
-  if (!uniformCrop && frame.width && frame.height) {
-    media.style.aspectRatio = `${frame.width} / ${frame.height}`;
+  // Set once the actual media loads rather than from a pre-fetched probe, since
+  // discovery no longer downloads full images/videos just to read dimensions.
+  if (!uniformCrop && !frame.isVideo) {
+    media.addEventListener("load", () => {
+      media.style.aspectRatio = `${media.naturalWidth} / ${media.naturalHeight}`;
+    });
   }
   figure.appendChild(media);
 
