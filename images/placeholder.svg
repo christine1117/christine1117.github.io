@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <rect width="800" height="1000" fill="#f1efec"/>
+  <rect x="1" y="1" width="798" height="998" fill="none" stroke="#cfcac2" stroke-width="2" stroke-dasharray="8 8"/>
+  <text x="400" y="490" font-family="Figtree, Arial, sans-serif" font-size="28" fill="#9a9489" text-anchor="middle">Add image</text>
+  <text x="400" y="530" font-family="Figtree, Arial, sans-serif" font-size="16" fill="#a39c92" text-anchor="middle">drop your file into /images and update the src</text>
+</svg>

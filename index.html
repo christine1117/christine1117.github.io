@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Christine Deng — Photography &amp; Painting</title>
+<meta name="description" content="Christine (Chiao-Chieh) Deng — photography, painting, and exhibition work.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="accent-bar"></div>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <span class="nav-name">Christine Deng</span>
+    <nav class="nav-links">
+      <a href="#photography">Photography</a>
+      <a href="#painting">Painting</a>
+      <a href="#exhibition">Exhibition</a>
+      <a href="#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO — this title physically flies down into the sticky spot on the
+       left once you scroll into the work section below (see js/main.js) -->
+  <section class="hero">
+    <div class="hero-doodles reveal" aria-hidden="true">
+      <span class="doodle-word" style="top:14%; left:9%;">(i think)</span>
+      <span class="doodle-word" style="top:10%; right:11%;">(the quiet)</span>
+      <span class="doodle-word" style="top:46%; left:5%;">(ordinary)</span>
+      <span class="doodle-word" style="top:52%; right:6%;">(moments)</span>
+      <span class="doodle-word" style="bottom:20%; left:12%;">(deserve)</span>
+      <span class="doodle-word" style="bottom:14%; right:16%;">(a second)</span>
+      <span class="doodle-word" style="bottom:8%; left:44%;">(look)</span>
+    </div>
+    <div class="hero-inner reveal" id="flying-title">
+      <h1 class="hero-title">
+        welcome to the way
+        <br><span class="accent">i see <span class="title-swap" data-default="everything." data-hover-scope=".work-section">everything.</span></span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- PHOTOGRAPHY + PAINTING — the hero title above lands and pins itself in
+       this left column (kept empty — it's just a spacer for the flying title's
+       resting position and to reserve the column's width), work scrolls on the right -->
+  <section class="work-section">
+    <div class="work-grid">
+
+      <div class="work-sticky" id="title-landing-spot"></div>
+
+      <div class="work-content">
+
+        <div id="photography" class="work-block">
+          <span class="eyebrow reveal">Photography</span>
+
+          <!-- Portrait -->
+          <article class="category reveal" data-hover-word="people.">
+            <div class="category-intro">
+              <span class="category-tag">Portrait</span>
+            </div>
+            <!--
+              Auto-loading series grid. To add a new series: create a new folder
+              images/photography/portrait/series-N/ (next unused number) and drop numbered
+              images inside it — 01.jpg, 02.jpg, 03.jpg... (jpg/jpeg/png/webp all work).
+              To add photos to an existing series, just continue the numbering in that folder.
+              Nothing here needs editing — the page finds new folders/files on its own.
+            -->
+            <div class="series-grid auto-gallery" data-base="images/photography/portrait/"></div>
+          </article>
+
+          <!-- Out and About (travel, everyday scenes, whatever's not portrait/film — folder name stays "street" for backward compatibility) -->
+          <article class="category reveal" data-hover-word="wherever i wander.">
+            <div class="category-intro">
+              <span class="category-tag">Out and About</span>
+            </div>
+            <!--
+              Auto-loading series grid. To add a new series: create a new folder
+              images/photography/street/series-N/ (next unused number) and drop numbered
+              images inside it — 01.jpg, 02.jpg, 03.jpg... (jpg/jpeg/png/webp all work).
+              To add photos to an existing series, just continue the numbering in that folder.
+              Nothing here needs editing — the page finds new folders/files on its own.
+            -->
+            <div class="series-grid auto-gallery" data-base="images/photography/street/"></div>
+          </article>
+
+          <!-- Film -->
+          <article class="category reveal" data-hover-word="on film.">
+            <div class="category-intro">
+              <span class="category-tag">Film</span>
+            </div>
+            <!--
+              Auto-loading flat gallery — no series here, just standalone shots.
+              Add a photo by dropping it into images/photography/film/ as the next number:
+              01.jpg, 02.jpg, 03.jpg... (jpg/jpeg/png/webp all work). Nothing here needs editing.
+            -->
+            <div class="grid-masonry auto-gallery-flat uniform-crop" data-base="images/photography/film/"></div>
+          </article>
+        </div>
+
+        <div id="painting" class="work-block">
+          <span class="eyebrow reveal">Oil Painting</span>
+
+          <!--
+            Auto-loading flat gallery — no sub-categories, just paintings in one grid.
+            Add a piece by dropping it into images/painting/ as the next number:
+            01.jpg, 02.jpg, 03.jpg... (jpg/jpeg/png/webp all work). Nothing here needs editing.
+          -->
+          <article class="category reveal" data-hover-word="in paint.">
+            <div class="grid-masonry auto-gallery-flat" data-base="images/painting/"></div>
+          </article>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EXHIBITION -->
+  <section id="exhibition" class="section">
+    <div class="section-head reveal">
+      <span class="eyebrow">Exhibition</span>
+      <h2 class="section-title">welcome to the way<br><span class="accent">i see <span class="title-swap" data-default="everything.">everything.</span></span></h2>
+    </div>
+
+    <div class="section-body">
+
+      <article class="category reveal exhibition-layout" data-hover-word="the line between real and fake.">
+        <div class="exhibition-text">
+          <div class="category-intro">
+            <span class="category-tag exhibition-title">重/解構 re<em>(li)</em>de<em>(bra)</em>structure<em>(ry)</em></span>
+          </div>
+
+          <p class="meta-line">
+            Seeing is not always believing.
+          </p>
+          <p class="meta-line">
+            In everyday life, objects seem to carry fixed functions and forms — a chair is for sitting,
+            a bookshelf is for holding books, and everything appears self-evident. But what happens when
+            we take these familiar objects apart and put them back together differently? Might we discover
+            that their essence and purpose hold more possibilities than we assumed? This exhibition invites
+            you into a library turned upside down — one where chairs and bookshelves no longer follow
+            convention, and where you'll find books that are fictional, absurd, or entirely impossible to
+            realize.
+          </p>
+          <p class="meta-line">
+            By unsettling our understanding of what a "normal" object should look like, this exhibition
+            hopes to spark a new way of imagining the familiar. You may find yourself asking: are the
+            things we consider "normal" actually fact — or just a shared illusion we've agreed to believe?
+            This exhibition invites you to move between truth and fallacy, challenging your past standards
+            and judgments, and breaking down the bias against the "abnormal."
+          </p>
+          <p class="meta-line meta-line-soft">Part of the 9th NCCU Arts Festival — "Co-Weird Paradox," May 2025.</p>
+          <p class="meta-line meta-line-soft">Co-curated with Violette Chen.</p>
+        </div>
+
+        <!--
+          Auto-loading flat gallery — photos and videos, all cropped to the same
+          size, in a 2-column grid. Add documentation by dropping it into
+          images/exhibition/ as the next number: 01.jpg, 02.jpg... or
+          01.mp4/.mov for video. Nothing here needs editing.
+        -->
+        <div class="exhibition-media">
+          <div class="grid-masonry auto-gallery-flat uniform-crop" data-base="images/exhibition/"></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about-section">
+
+    <div class="about-top reveal">
+      <!-- Swap for a candid photo of yourself, ideally a cutout / transparent background -->
+      <div class="about-photo">
+        <img src="images/me.png" alt="Christine Deng">
+      </div>
+      <div class="about-intro">
+        <span class="eyebrow">About</span>
+        <h3 class="about-hi">Hi, I'm Christine!</h3>
+        <p class="about-bio">
+          I'm a Psychology and AI double major, and I like recording things
+          through different mediums — a camera, paint, whatever fits the moment.
+        </p>
+      </div>
+    </div>
+
+    <div class="about-closing reveal">
+      <p class="about-thanks">Thanks for looking.</p>
+      <div class="contact-links">
+        <a href="mailto:christine921117@gmail.com">Email</a>
+        <a href="https://www.instagram.com/chriseee_____/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.linkedin.com/in/christine-deng-7006b7327/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<button class="to-top" aria-label="Back to top">&uarr;</button>
+
+<script src="js/main.js"></script>
+</body>
+</html>
