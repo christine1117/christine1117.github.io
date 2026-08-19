@@ -19,47 +19,269 @@ function observeReveal(el, delayMs) {
 
 document.querySelectorAll(".reveal, .category").forEach((el) => revealObserver.observe(el));
 
-// Title-swap word: hovering any category on the right swaps that word to
-// name what you're pointing at, then eases back on mouseleave — a
-// typewriter effect (backspaces the old word, types the new one).
-document.querySelectorAll(".title-swap").forEach((swapEl) => {
-  // Hover targets usually live in the same <section> as the title, but the
-  // flying title sits in .hero while its targets are in the sibling
-  // .work-section — data-hover-scope points explicitly at that case.
-  const scope = (swapEl.dataset.hoverScope && document.querySelector(swapEl.dataset.hoverScope)) ||
-    swapEl.closest("section") ||
-    document;
-  const defaultText = swapEl.dataset.default || swapEl.textContent;
-  let typingId = 0;
+// Hero title types itself out line by line, with a blinking cursor at the
+// end of whichever line is currently being typed. Runs once, the first time
+// the hero scrolls into view (page load, since it's already on screen).
+(function initHeroTypewriter() {
+  const heroInner = document.querySelector(".hero .hero-inner");
+  const lines = heroInner ? [...heroInner.querySelectorAll(".hero-line")] : [];
+  if (!heroInner || lines.length === 0) return;
 
-  const typeSwapText = (text) => {
-    const id = ++typingId;
+  const fullTexts = lines.map((el) => el.textContent);
+  lines.forEach((el) => { el.textContent = ""; });
 
-    const typeStep = (i) => {
-      if (id !== typingId) return;
-      swapEl.textContent = text.slice(0, i);
-      if (i < text.length) setTimeout(() => typeStep(i + 1), 38);
-    };
-
-    const eraseStep = () => {
-      if (id !== typingId) return;
-      const current = swapEl.textContent;
-      if (current.length > 0) {
-        swapEl.textContent = current.slice(0, -1);
-        setTimeout(eraseStep, 18);
+  function typeLine(index) {
+    if (index >= lines.length) return;
+    const el = lines[index];
+    const text = fullTexts[index];
+    el.classList.add("typing");
+    let i = 0;
+    (function step() {
+      el.textContent = text.slice(0, i);
+      i++;
+      if (i <= text.length) {
+        setTimeout(step, 28);
       } else {
-        typeStep(0);
+        el.classList.remove("typing");
+        setTimeout(() => typeLine(index + 1), 250);
       }
-    };
+    })();
+  }
 
-    eraseStep();
-  };
+  const heroTypeObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          typeLine(0);
+          heroTypeObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+  heroTypeObserver.observe(heroInner);
+})();
 
-  scope.querySelectorAll(".category[data-hover-word]").forEach((category) => {
-    category.addEventListener("mouseenter", () => typeSwapText(category.dataset.hoverWord));
-    category.addEventListener("mouseleave", () => typeSwapText(defaultText));
+// Project cards show a cover image, index/category, title, blurb, and tags —
+// clicking one opens the full write-up (tags, achievement, meta, overview)
+// in a shared modal, built by cloning the card's title/tags/blurb plus its
+// hidden .project-details into the modal body.
+(function initProjectModal() {
+  const modal = document.getElementById("project-modal");
+  const modalBody = modal ? modal.querySelector(".project-modal-body") : null;
+  const cards = document.querySelectorAll(".project-card");
+  if (!modal || !modalBody || cards.length === 0) return;
+
+  function openModal(card) {
+    const cover = card.querySelector(".project-cover");
+    const title = card.querySelector(".project-title");
+    const tags = card.querySelector(".project-tags");
+    const details = card.querySelector(".project-details");
+    modalBody.innerHTML = "";
+
+    if (cover) {
+      const img = document.createElement("img");
+      img.className = "project-modal-cover";
+      img.src = cover.src;
+      img.alt = cover.alt;
+      modalBody.appendChild(img);
+    }
+    if (title) {
+      const heading = document.createElement("h3");
+      heading.className = "project-title";
+      heading.textContent = title.textContent;
+      modalBody.appendChild(heading);
+    }
+    if (tags) {
+      modalBody.appendChild(tags.cloneNode(true));
+    }
+    if (details) {
+      const clone = details.cloneNode(true);
+      clone.hidden = false;
+      modalBody.appendChild(clone);
+    }
+
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  cards.forEach((card) => {
+    card.addEventListener("click", () => openModal(card));
   });
-});
+
+  modal.querySelectorAll("[data-modal-close]").forEach((el) => {
+    el.addEventListener("click", closeModal);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !modal.hidden) closeModal();
+  });
+})();
+
+// Featured Projects masonry: cards render at their own height (each cover
+// keeps its natural aspect ratio, no cropping), but neither CSS Grid nor
+// CSS multi-column can give a consistent gap under every card without
+// breaking something else — Grid's row height is set by the row's tallest
+// card, so shorter cards get a bigger gap than taller ones; multi-column
+// fills one column completely before starting the next, which scrambles
+// the 01/02/03... reading order. This places each card into whichever
+// column is currently shortest, in source order, so the gap stays even
+// and the numbering still reads left to right, top to bottom.
+(function initProjectMasonry() {
+  const grid = document.querySelector(".project-grid");
+  if (!grid) return;
+  const cards = Array.from(grid.querySelectorAll(".project-card"));
+  if (cards.length === 0) return;
+
+  const ROW_GAP = 12;
+  const COLUMN_GAP = 20;
+
+  function columnCountFor(viewportWidth) {
+    if (viewportWidth <= 480) return 1;
+    if (viewportWidth <= 720) return 2;
+    if (viewportWidth <= 1000) return 3;
+    return 4;
+  }
+
+  function layout() {
+    const gridWidth = grid.clientWidth;
+    const columns = columnCountFor(window.innerWidth);
+    const columnWidth = (gridWidth - COLUMN_GAP * (columns - 1)) / columns;
+    const columnHeights = new Array(columns).fill(0);
+
+    cards.forEach((card, index) => {
+      card.style.width = `${columnWidth}px`;
+      // Straight left-to-right column order (not "whichever column is
+      // shortest"): the gap under each card is always exactly ROW_GAP
+      // either way, since it's just that column's running height — but
+      // round-robin keeps cards 05/06/... packed snugly next to each
+      // other instead of scattering across whichever columns happened to
+      // be shortest, which left visible gaps in a mostly-empty last row.
+      const col = index % columns;
+      card.style.left = `${col * (columnWidth + COLUMN_GAP)}px`;
+      card.style.top = `${columnHeights[col]}px`;
+      columnHeights[col] += card.offsetHeight + ROW_GAP;
+      card.classList.add("is-positioned");
+    });
+
+    grid.style.height = `${Math.max(...columnHeights) - ROW_GAP}px`;
+  }
+
+  layout();
+  window.addEventListener("load", layout);
+
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(layout, 150);
+  });
+})();
+
+// "How I Think" bento card: steps light up one at a time, connected by a
+// fill line, with the description synced below. Starts once the card
+// scrolls into view, then loops forever.
+(function initThinkSteps() {
+  const track = document.getElementById("think-steps");
+  const fill = document.getElementById("think-fill");
+  const desc = document.getElementById("think-desc");
+  if (!track || !desc) return;
+
+  const steps = Array.from(track.querySelectorAll(".think-step"));
+  const descriptions = [
+    "I start by noticing patterns and pain points in how people actually behave, not how they say they behave.",
+    "I dig into the why behind those patterns, questioning assumptions before jumping to a solution.",
+    "I reframe the problem so the real, addressable question comes into focus.",
+    "I prototype quickly to test the reframed idea in something people can actually touch.",
+    "I test with real users, then feed what I learn back into observing again.",
+  ];
+
+  // wrapping (Test back to Observe) skips the fill-bar's width transition,
+  // so it resets instantly instead of visibly rewinding right-to-left —
+  // that rewind read as a stutter/reset point rather than a clean loop.
+  function setActive(index, skipFillTransition) {
+    steps.forEach((step, i) => {
+      step.classList.toggle("is-active", i === index);
+      step.classList.toggle("is-done", i < index);
+    });
+    if (fill) {
+      if (skipFillTransition) fill.style.transition = "none";
+      fill.style.width = `${(index / (steps.length - 1)) * 100}%`;
+      if (skipFillTransition) {
+        void fill.offsetWidth; // flush the instant width change first
+        fill.style.transition = "";
+      }
+    }
+    desc.textContent = descriptions[index];
+  }
+
+  let index = 0;
+  let timer = null;
+
+  function start() {
+    if (timer) return;
+    setActive(0, true);
+    timer = setInterval(() => {
+      const next = (index + 1) % steps.length;
+      const wrapped = next === 0;
+      index = next;
+      setActive(index, wrapped);
+    }, 2200);
+  }
+
+  const stepObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          start();
+          stepObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.4 }
+  );
+  stepObserver.observe(track);
+})();
+
+// "What I Build" bento card: the headline word slides up and out while the
+// next one slides up into place, cycling forever. Starts once the card
+// scrolls into view.
+(function initBuildCycle() {
+  const cycle = document.getElementById("build-cycle");
+  if (!cycle) return;
+
+  const words = Array.from(cycle.querySelectorAll(".build-word"));
+  if (words.length < 2) return;
+
+  let index = 0;
+  let timer = null;
+
+  function start() {
+    if (timer) return;
+    timer = setInterval(() => {
+      words[index].classList.remove("is-active");
+      index = (index + 1) % words.length;
+      words[index].classList.add("is-active");
+    }, 2600);
+  }
+
+  const buildObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          start();
+          buildObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.4 }
+  );
+  buildObserver.observe(cycle);
+})();
 
 // Back-to-top button
 const toTopBtn = document.querySelector(".to-top");
@@ -69,87 +291,6 @@ window.addEventListener("scroll", () => {
 toTopBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
-
-// The hero title physically flies from its centered starting spot down into
-// a pinned position on the left of the work section, tracking scroll — one
-// element, repositioned with a transform each frame (a FLIP-style handoff),
-// not two separate elements crossfading into each other.
-(function initFlyingTitle() {
-  const flyingTitle = document.getElementById("flying-title");
-  const heroSection = document.querySelector(".hero");
-  const landingSpot = document.getElementById("title-landing-spot");
-  const workSection = document.querySelector(".work-section");
-  if (!flyingTitle || !heroSection || !landingSpot || !workSection) return;
-  if (window.innerWidth <= 960) return; // narrow screens keep the plain stacked layout
-
-  let start = null; // { left, top, width, height } — natural centered position, measured at scrollY 0
-  let end = null; // { left, width } — resting column position (horizontal only)
-  const endTopVh = 0.36; // where the title rests vertically once landed, as a fraction of viewport height
-  const flightDistance = () => Math.max(heroSection.offsetHeight * 0.35, 1);
-
-  function measure() {
-    const wasFlying = flyingTitle.classList.contains("flying");
-    if (wasFlying) flyingTitle.classList.remove("flying");
-    const rect = flyingTitle.getBoundingClientRect();
-    start = { left: rect.left, top: rect.top + window.scrollY, width: rect.width, height: rect.height };
-    if (wasFlying) flyingTitle.classList.add("flying");
-    const landRect = landingSpot.getBoundingClientRect();
-    end = { left: landRect.left, width: landRect.width };
-  }
-
-  let ticking = false;
-  function update() {
-    ticking = false;
-    if (!start || !end) return;
-
-    const progress = Math.min(Math.max(window.scrollY / flightDistance(), 0), 1);
-    const scrollForNatural = Math.min(window.scrollY, flightDistance());
-    const naturalTop = start.top - scrollForNatural;
-    const targetTop = window.innerHeight * endTopVh;
-
-    const top = naturalTop + (targetTop - naturalTop) * progress;
-    const left = start.left + (end.left - start.left) * progress;
-    const scale = 1 + (end.width / start.width - 1) * progress;
-
-    flyingTitle.classList.add("flying");
-    flyingTitle.style.left = `${left}px`;
-    flyingTitle.style.top = `${top}px`;
-    flyingTitle.style.width = `${start.width}px`;
-    flyingTitle.style.transform = `scale(${scale})`;
-
-    // Once landed, fade out as the work section's bottom catches up to the
-    // title's own bottom edge, so it doesn't float over Exhibition/Travel/
-    // About further down.
-    if (progress >= 1) {
-      const workRect = workSection.getBoundingClientRect();
-      const titleBottom = top + start.height * scale;
-      const fadeMargin = 140;
-      const distanceToEnd = workRect.bottom - titleBottom;
-      const opacity = Math.min(Math.max(distanceToEnd / fadeMargin, 0), 1);
-      flyingTitle.style.opacity = String(opacity);
-      flyingTitle.style.visibility = opacity <= 0 ? "hidden" : "visible";
-    } else {
-      flyingTitle.style.opacity = "1";
-      flyingTitle.style.visibility = "visible";
-    }
-  }
-
-  function requestUpdate() {
-    if (!ticking) {
-      requestAnimationFrame(update);
-      ticking = true;
-    }
-  }
-
-  window.addEventListener("scroll", requestUpdate, { passive: true });
-  window.addEventListener("resize", () => {
-    measure();
-    requestUpdate();
-  });
-
-  measure();
-  requestUpdate();
-})();
 
 // Series tile: explicit prev/next arrows step through that series' photos
 // one at a time — no hover-driven auto-movement, so it stays in your control.
@@ -357,7 +498,7 @@ async function discoverSeries(basePath, maxSeries = 15, maxFrames = 30, windowSi
   return series;
 }
 
-function buildSeriesTile(seriesIndex, frames) {
+function buildSeriesTile(seriesIndex, frames, uniformCrop) {
   const figure = document.createElement("figure");
   figure.className = "series-tile";
 
@@ -369,10 +510,11 @@ function buildSeriesTile(seriesIndex, frames) {
     img.loading = "lazy";
     img.alt = `Series ${seriesIndex}, frame ${frameIndex + 1}`;
     // Size the tile to the cover photo's real orientation instead of forcing
-    // every photo into the same portrait crop — landscape shots stay landscape.
-    // Set once the actual image loads rather than from a pre-fetched probe,
-    // since discovery no longer downloads full images just to read dimensions.
-    if (frameIndex === 0) {
+    // every photo into the same crop — landscape shots stay landscape. Skipped
+    // in uniformCrop mode (e.g. the small "Also Me" highlight row), where every
+    // tile should match size regardless of each photo's own orientation — the
+    // fixed aspect-ratio comes from CSS there instead, cropped via object-fit.
+    if (frameIndex === 0 && !uniformCrop) {
       img.addEventListener("load", () => {
         figure.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
       });
@@ -392,6 +534,7 @@ function buildSeriesTile(seriesIndex, frames) {
 
 async function loadAutoGallery(container) {
   const basePath = container.dataset.base;
+  const limit = parseInt(container.dataset.limit, 10) || null;
   const series = await discoverSeries(basePath);
 
   container.innerHTML = "";
@@ -402,8 +545,12 @@ async function loadAutoGallery(container) {
     container.appendChild(empty);
     return;
   }
-  series.forEach((frames, i) => {
-    container.appendChild(buildSeriesTile(i + 1, frames));
+  // Limited mode: a small fixed highlight, not the full growing gallery — only
+  // the first N series show up, but each still keeps its own prev/next arrows
+  // since a series can hold several photos, not just its cover.
+  const shown = limit ? series.slice(0, limit) : series;
+  shown.forEach((frames, i) => {
+    container.appendChild(buildSeriesTile(i + 1, frames, Boolean(limit)));
   });
 }
 
@@ -466,7 +613,9 @@ function buildFlatTile(frame, index, uniformCrop) {
 async function loadFlatGallery(container) {
   const basePath = container.dataset.base;
   const uniformCrop = container.classList.contains("uniform-crop");
-  const images = await discoverFlatImages(basePath);
+  const limit = parseInt(container.dataset.limit, 10) || null;
+  let images = await discoverFlatImages(basePath);
+  if (limit) images = images.slice(0, limit);
 
   container.innerHTML = "";
   if (images.length === 0) {

@@ -4,16 +4,6 @@ window.GALLERY_MANIFEST = {
     "type": "series",
     "series": [
       [
-        "images/photography/portrait/series-1/01.jpg",
-        "images/photography/portrait/series-1/02.jpg",
-        "images/photography/portrait/series-1/03.jpg"
-      ],
-      [
-        "images/photography/portrait/series-2/01.jpg",
-        "images/photography/portrait/series-2/02.jpg",
-        "images/photography/portrait/series-2/03.jpg"
-      ],
-      [
         "images/photography/portrait/series-3/01.jpg",
         "images/photography/portrait/series-3/02.jpg",
         "images/photography/portrait/series-3/03.jpg",
@@ -29,58 +19,15 @@ window.GALLERY_MANIFEST = {
         "images/photography/portrait/series-4/05.jpg"
       ],
       [
-        "images/photography/portrait/series-5/01.jpg",
-        "images/photography/portrait/series-5/02.jpg",
-        "images/photography/portrait/series-5/03.jpg",
-        "images/photography/portrait/series-5/04.jpg"
-      ],
-      [
-        "images/photography/portrait/series-6/01.jpg",
-        "images/photography/portrait/series-6/02.jpg",
-        "images/photography/portrait/series-6/03.jpg",
-        "images/photography/portrait/series-6/04.jpg"
-      ],
-      [
-        "images/photography/portrait/series-7/01.jpg",
-        "images/photography/portrait/series-7/02.jpg",
-        "images/photography/portrait/series-7/03.jpg",
-        "images/photography/portrait/series-7/04.jpg",
-        "images/photography/portrait/series-7/05.jpg"
-      ],
-      [
         "images/photography/portrait/series-8/01.jpg",
         "images/photography/portrait/series-8/02.jpg",
         "images/photography/portrait/series-8/03.jpg"
-      ],
-      [
-        "images/photography/portrait/series-9/01.jpg",
-        "images/photography/portrait/series-9/02.jpg"
-      ],
-      [
-        "images/photography/portrait/series-10/01.jpg",
-        "images/photography/portrait/series-10/02.jpg"
-      ],
-      [
-        "images/photography/portrait/series-11/01.jpg",
-        "images/photography/portrait/series-11/02.jpg",
-        "images/photography/portrait/series-11/03.jpg"
-      ],
-      [
-        "images/photography/portrait/series-12/01.jpg",
-        "images/photography/portrait/series-12/02.jpg",
-        "images/photography/portrait/series-12/03.jpg"
       ]
     ]
   },
   "images/photography/street/": {
     "type": "series",
     "series": [
-      [
-        "images/photography/street/series-1/01.jpg",
-        "images/photography/street/series-1/02.jpg",
-        "images/photography/street/series-1/03.jpg",
-        "images/photography/street/series-1/04.jpg"
-      ],
       [
         "images/photography/street/series-2/01.jpg",
         "images/photography/street/series-2/02.jpg",
@@ -100,15 +47,6 @@ window.GALLERY_MANIFEST = {
       [
         "images/photography/street/series-5/01.jpg",
         "images/photography/street/series-5/02.jpg"
-      ],
-      [
-        "images/photography/street/series-6/01.jpg"
-      ],
-      [
-        "images/photography/street/series-7/01.jpg",
-        "images/photography/street/series-7/02.jpg",
-        "images/photography/street/series-7/03.jpg",
-        "images/photography/street/series-7/04.jpg"
       ]
     ]
   },
@@ -124,43 +62,7 @@ window.GALLERY_MANIFEST = {
         "isVideo": false
       },
       {
-        "url": "images/photography/film/03.jpg",
-        "isVideo": false
-      },
-      {
         "url": "images/photography/film/04.jpg",
-        "isVideo": false
-      },
-      {
-        "url": "images/photography/film/05.jpg",
-        "isVideo": false
-      },
-      {
-        "url": "images/photography/film/06.jpg",
-        "isVideo": false
-      },
-      {
-        "url": "images/photography/film/07.jpg",
-        "isVideo": false
-      },
-      {
-        "url": "images/photography/film/08.jpg",
-        "isVideo": false
-      },
-      {
-        "url": "images/photography/film/09.jpg",
-        "isVideo": false
-      },
-      {
-        "url": "images/photography/film/10.jpg",
-        "isVideo": false
-      },
-      {
-        "url": "images/photography/film/11.jpg",
-        "isVideo": false
-      },
-      {
-        "url": "images/photography/film/12.jpg",
         "isVideo": false
       }
     ]
@@ -194,11 +96,7 @@ window.GALLERY_MANIFEST = {
         "isVideo": false
       },
       {
-        "url": "images/exhibition/03.jpg",
-        "isVideo": false
-      },
-      {
-        "url": "images/exhibition/04.mov",
+        "url": "images/exhibition/03.mov",
         "isVideo": true
       }
     ]

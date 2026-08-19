@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beyond Code — Christine Deng</title>
+<meta name="description" content="Christine (Chiao-Chieh) Deng — photography, painting, and exhibition work.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="accent-bar"></div>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-name" href="index.html">Christine Deng</a>
+    <nav class="nav-links">
+      <a href="index.html#about">About</a>
+      <a href="projects.html">Projects</a>
+      <a href="beyond-code.html">Beyond Code</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- BEYOND CODE — Photography, Painting, and Exhibition merged into one
+       section instead of three separate ones. Deliberately small: 3
+       highlight photos per category, not the full library. Each shows the
+       cover of its first 3 series (or first 3 photos for Film/Painting).
+       Add more photos to the usual folders and they'll still be saved, just
+       not shown here until the limit is raised. -->
+  <section id="beyond-code" class="section">
+    <div class="section-head reveal">
+      <p class="meta-line meta-line-soft">
+        A bit of a side story: a few other sides of me, outside of engineering.
+      </p>
+      <span class="eyebrow">Beyond Code</span>
+    </div>
+
+    <div class="section-body">
+
+      <!-- Four blocks staggered into an irregular grid instead of a plain
+           list — see .beyond-block:nth-child() in style.css for the offsets.
+           Each block stacks text above the work now instead of side by side. -->
+      <div class="beyond-blocks">
+
+        <!-- Portrait -->
+        <article class="category reveal beyond-block">
+          <div class="beyond-block-text">
+            <div class="category-intro">
+              <span class="category-tag">Portrait</span>
+            </div>
+            <p class="meta-line">
+              I love photographing people, especially the in-between moments, right before or
+              after a pose, when they forget the camera's even there. Those shots are always
+              the best ones.
+            </p>
+          </div>
+          <div class="beyond-block-media">
+            <div class="grid-masonry auto-gallery uniform-crop" data-base="images/photography/portrait/" data-limit="3"></div>
+          </div>
+        </article>
+
+        <!-- Out and About (travel, everyday scenes, whatever's not portrait/film — folder name stays "street" for backward compatibility) -->
+        <article class="category reveal beyond-block">
+          <div class="beyond-block-text">
+            <div class="category-intro">
+              <span class="category-tag">Out and About</span>
+            </div>
+            <p class="meta-line">
+              I really love to travel and shoot street photography, just wandering around and
+              snapping whatever catches my eye. These three are from Okinawa, UCLA, and
+              Yosemite.
+            </p>
+          </div>
+          <div class="beyond-block-media">
+            <div class="grid-masonry auto-gallery uniform-crop" data-base="images/photography/street/" data-limit="3"></div>
+          </div>
+        </article>
+
+        <!-- Film -->
+        <article class="category reveal beyond-block">
+          <div class="beyond-block-text">
+            <div class="category-intro">
+              <span class="category-tag">Film</span>
+            </div>
+            <p class="meta-line">
+              I like not knowing what I got until the roll's developed. It makes me actually
+              slow down and think about the shot instead of just spamming the shutter.
+            </p>
+          </div>
+          <div class="beyond-block-media">
+            <div class="grid-masonry auto-gallery-flat uniform-crop" data-base="images/photography/film/" data-limit="3"></div>
+          </div>
+        </article>
+
+        <!-- Painting -->
+        <article class="category reveal beyond-block">
+          <div class="beyond-block-text">
+            <div class="category-intro">
+              <span class="category-tag">Oil Painting</span>
+            </div>
+            <p class="meta-line">
+              This is where I slow down the most. I especially love painting portraits. It
+              forces me to really study a face instead of just glancing at it, catching all the
+              small asymmetries and expressions a photo would blur past.
+            </p>
+          </div>
+          <div class="beyond-block-media beyond-block-media-tall">
+            <div class="grid-masonry auto-gallery-flat uniform-crop" data-base="images/painting/" data-limit="3"></div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Curation (formerly Exhibition) — kept as its own full-width block
+           with a 1x3 media row. -->
+      <article class="category reveal curation-block">
+        <div class="beyond-block-text">
+          <div class="category-intro">
+            <span class="category-tag">Curation</span>
+          </div>
+
+          <p class="exhibition-title">重/解構 re<em>(li)</em>de<em>(bra)</em>structure<em>(ry)</em></p>
+
+          <p class="meta-line">
+            We basically took everyday objects, like chairs and bookshelves, and rebuilt them
+            into weird, impossible versions, just to mess with what people assume is "normal."
+          </p>
+          <p class="meta-line meta-line-soft">Part of the 9th NCCU Arts Festival, "Co-Weird Paradox," May 2025.</p>
+          <p class="meta-line meta-line-soft">Co-curated with Violette Chen.</p>
+        </div>
+
+        <!--
+          Hand-written (not auto-loaded) so each piece can carry its own
+          caption — swap the images or rewrite the figcaptions directly here.
+        -->
+        <div class="curation-media">
+          <div class="grid-masonry">
+            <figure class="tile">
+              <img src="images/exhibition/01.jpg" alt="A bicycle frame reassembled into a seat, next to a KTV chair reimagined as a piggyback-fight horse">
+              <figcaption>We took a broken bike frame apart and turned it into a seat, paired with an old KTV chair reimagined as a "horse" for a piggyback-fight game.</figcaption>
+            </figure>
+            <figure class="tile">
+              <img src="images/exhibition/02.jpg" alt="Christine and her co-curator with a table rebuilt on four raised legs and fitted with wheels">
+              <figcaption>Me and my co-curator with a table we rebuilt, raised onto four new legs and fitted with wheels so it could roll.</figcaption>
+            </figure>
+            <figure class="tile">
+              <video src="images/exhibition/03.mov" controls muted playsinline preload="metadata"></video>
+              <figcaption>A video walking through how each piece was put together, filmed partly at Eslite.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer reveal">
+  <p class="about-thanks">Thanks for looking.</p>
+  <div class="contact-links">
+    <a href="mailto:christine921117@gmail.com">Email</a>
+    <a href="https://github.com/christine1117" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="https://www.linkedin.com/in/christine-deng-7006b7327/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
+  <p class="footer-copyright">&copy; 2026 Christine Deng. All rights reserved.</p>
+</footer>
+
+<button class="to-top" aria-label="Back to top">&uarr;</button>
+
+<script src="js/gallery-manifest.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

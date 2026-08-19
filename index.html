@@ -16,194 +16,426 @@
 
 <header class="site-nav">
   <div class="nav-inner">
-    <span class="nav-name">Christine Deng</span>
+    <a class="nav-name" href="index.html">Christine Deng</a>
     <nav class="nav-links">
-      <a href="#photography">Photography</a>
-      <a href="#painting">Painting</a>
-      <a href="#exhibition">Exhibition</a>
-      <a href="#about">About</a>
+      <a href="index.html#about">About</a>
+      <a href="projects.html">Projects</a>
+      <a href="beyond-code.html">Beyond Code</a>
+      <a href="blog.html">Blog</a>
     </nav>
   </div>
 </header>
 
 <main>
 
-  <!-- HERO — this title physically flies down into the sticky spot on the
-       left once you scroll into the work section below (see js/main.js) -->
-  <section class="hero">
-    <div class="hero-doodles reveal" aria-hidden="true">
-      <span class="doodle-word" style="top:26%; left:22%;">(i think)</span>
-      <span class="doodle-word" style="top:22%; right:22%;">(the quiet)</span>
-      <span class="doodle-word" style="top:46%; left:15%;">(ordinary)</span>
-      <span class="doodle-word" style="top:52%; right:16%;">(moments)</span>
-      <span class="doodle-word" style="bottom:28%; left:23%;">(deserve)</span>
-      <span class="doodle-word" style="bottom:24%; right:26%;">(a second)</span>
-      <span class="doodle-word" style="bottom:17%; left:44%;">(look)</span>
-    </div>
-    <div class="hero-inner reveal" id="flying-title">
-      <h1 class="hero-title">
-        welcome to the way
-        <br><span class="accent">i see <span class="title-swap" data-default="everything." data-hover-scope=".work-section">everything.</span></span>
-      </h1>
-    </div>
-  </section>
-
-  <!-- PHOTOGRAPHY + PAINTING — the hero title above lands and pins itself in
-       this left column (kept empty — it's just a spacer for the flying title's
-       resting position and to reserve the column's width), work scrolls on the right -->
-  <section class="work-section">
-    <div class="work-grid">
-
-      <div class="work-sticky" id="title-landing-spot"></div>
-
-      <div class="work-content">
-
-        <div id="photography" class="work-block">
-          <span class="eyebrow reveal">Photography</span>
-
-          <!-- Portrait -->
-          <article class="category reveal" data-hover-word="people.">
-            <div class="category-intro">
-              <span class="category-tag">Portrait</span>
-            </div>
-            <!--
-              Auto-loading series grid. To add a new series: create a new folder
-              images/photography/portrait/series-N/ (next unused number) and drop numbered
-              images inside it — 01.jpg, 02.jpg, 03.jpg... (jpg/jpeg/png/webp all work).
-              To add photos to an existing series, just continue the numbering in that folder.
-              Nothing here needs editing — the page finds new folders/files on its own.
-            -->
-            <div class="series-grid auto-gallery" data-base="images/photography/portrait/"></div>
-          </article>
-
-          <!-- Out and About (travel, everyday scenes, whatever's not portrait/film — folder name stays "street" for backward compatibility) -->
-          <article class="category reveal" data-hover-word="wherever i wander.">
-            <div class="category-intro">
-              <span class="category-tag">Out and About</span>
-            </div>
-            <!--
-              Auto-loading series grid. To add a new series: create a new folder
-              images/photography/street/series-N/ (next unused number) and drop numbered
-              images inside it — 01.jpg, 02.jpg, 03.jpg... (jpg/jpeg/png/webp all work).
-              To add photos to an existing series, just continue the numbering in that folder.
-              Nothing here needs editing — the page finds new folders/files on its own.
-            -->
-            <div class="series-grid auto-gallery" data-base="images/photography/street/"></div>
-          </article>
-
-          <!-- Film -->
-          <article class="category reveal" data-hover-word="on film.">
-            <div class="category-intro">
-              <span class="category-tag">Film</span>
-            </div>
-            <!--
-              Auto-loading flat gallery — no series here, just standalone shots.
-              Add a photo by dropping it into images/photography/film/ as the next number:
-              01.jpg, 02.jpg, 03.jpg... (jpg/jpeg/png/webp all work). Nothing here needs editing.
-            -->
-            <div class="grid-masonry auto-gallery-flat uniform-crop" data-base="images/photography/film/"></div>
-          </article>
+  <!-- HERO — doubles as the About intro: name + bio on the left, photo on
+       the right. #about is here so the nav link lands right at the top. -->
+  <section class="hero" id="about">
+    <div class="hero-inner reveal">
+      <div class="hero-intro-grid">
+        <div class="hero-intro-text">
+          <h1 class="hero-title">
+            <span class="hero-line">Hi, I'm Christine!</span>
+          </h1>
+          <p class="hero-bio">
+            I'm a Psychology and AI double major. This site is a collection of projects I've
+            built while figuring out AI, and also a place to get to know a few different sides
+            of me.
+          </p>
         </div>
-
-        <div id="painting" class="work-block">
-          <span class="eyebrow reveal">Oil Painting</span>
-
-          <!--
-            Auto-loading flat gallery — no sub-categories, just paintings in one grid.
-            Add a piece by dropping it into images/painting/ as the next number:
-            01.jpg, 02.jpg, 03.jpg... (jpg/jpeg/png/webp all work). Nothing here needs editing.
-          -->
-          <article class="category reveal" data-hover-word="in paint.">
-            <div class="grid-masonry auto-gallery-flat" data-base="images/painting/"></div>
-          </article>
+        <!-- Swap for a candid photo of yourself, ideally a cutout / transparent background -->
+        <div class="hero-photo">
+          <img src="images/me.png" alt="Christine Deng">
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- EXHIBITION -->
-  <section id="exhibition" class="section">
-    <div class="section-head reveal">
-      <span class="eyebrow">Exhibition</span>
-      <h2 class="section-title">welcome to the way<br><span class="accent">i see <span class="title-swap" data-default="everything.">everything.</span></span></h2>
-    </div>
+  <!-- BENTO GRID — no heading, sits directly under the hero -->
+  <section class="about-section">
+    <div class="bento-grid">
 
-    <div class="section-body">
+      <!-- Row 1: Tech Stack (wide, 3-row marquee) + Favorite Tools (narrow) -->
+      <div class="bento-row bento-row-top">
 
-      <article class="category reveal exhibition-layout" data-hover-word="the line between real and fake.">
-        <div class="exhibition-text">
-          <div class="category-intro">
-            <span class="category-tag exhibition-title">重/解構 re<em>(li)</em>de<em>(bra)</em>structure<em>(ry)</em></span>
+        <!-- Tech Stack — each row's tag list is repeated a few times before
+             being duplicated for the loop. A seamless duplicate-then-shift-
+             50% marquee only reads as continuous if one full "copy" is
+             wider than the card itself; with just 3-4 short tags a single
+             copy was narrower than the card, so the repeat was visible at
+             once instead of scrolling in from off-screen. Repeating the
+             base list first pads each copy out past the card's width. -->
+        <div class="bento-card bento-card-tech reveal">
+          <span class="bento-label">Tech Stack</span>
+          <div class="marquee-stack">
+            <div class="marquee-row marquee-left">
+              <div class="marquee-track">
+                <span class="project-tag">Python</span>
+                <span class="project-tag">PyTorch</span>
+                <span class="project-tag">scikit-learn</span>
+                <span class="project-tag">Pandas</span>
+                <span class="project-tag">XGBoost</span>
+                <span class="project-tag">Transformers</span>
+                <span class="project-tag" aria-hidden="true">Python</span>
+                <span class="project-tag" aria-hidden="true">PyTorch</span>
+                <span class="project-tag" aria-hidden="true">scikit-learn</span>
+                <span class="project-tag" aria-hidden="true">Pandas</span>
+                <span class="project-tag" aria-hidden="true">XGBoost</span>
+                <span class="project-tag" aria-hidden="true">Transformers</span>
+                <span class="project-tag" aria-hidden="true">Python</span>
+                <span class="project-tag" aria-hidden="true">PyTorch</span>
+                <span class="project-tag" aria-hidden="true">scikit-learn</span>
+                <span class="project-tag" aria-hidden="true">Pandas</span>
+                <span class="project-tag" aria-hidden="true">XGBoost</span>
+                <span class="project-tag" aria-hidden="true">Transformers</span>
+                <span class="project-tag" aria-hidden="true">Python</span>
+                <span class="project-tag" aria-hidden="true">PyTorch</span>
+                <span class="project-tag" aria-hidden="true">scikit-learn</span>
+                <span class="project-tag" aria-hidden="true">Pandas</span>
+                <span class="project-tag" aria-hidden="true">XGBoost</span>
+                <span class="project-tag" aria-hidden="true">Transformers</span>
+              </div>
+            </div>
+            <div class="marquee-row marquee-right">
+              <div class="marquee-track">
+                <span class="project-tag">SwiftUI</span>
+                <span class="project-tag">React</span>
+                <span class="project-tag">FastAPI</span>
+                <span class="project-tag" aria-hidden="true">SwiftUI</span>
+                <span class="project-tag" aria-hidden="true">React</span>
+                <span class="project-tag" aria-hidden="true">FastAPI</span>
+                <span class="project-tag" aria-hidden="true">SwiftUI</span>
+                <span class="project-tag" aria-hidden="true">React</span>
+                <span class="project-tag" aria-hidden="true">FastAPI</span>
+                <span class="project-tag" aria-hidden="true">SwiftUI</span>
+                <span class="project-tag" aria-hidden="true">React</span>
+                <span class="project-tag" aria-hidden="true">FastAPI</span>
+                <span class="project-tag" aria-hidden="true">SwiftUI</span>
+                <span class="project-tag" aria-hidden="true">React</span>
+                <span class="project-tag" aria-hidden="true">FastAPI</span>
+                <span class="project-tag" aria-hidden="true">SwiftUI</span>
+                <span class="project-tag" aria-hidden="true">React</span>
+                <span class="project-tag" aria-hidden="true">FastAPI</span>
+                <span class="project-tag" aria-hidden="true">SwiftUI</span>
+                <span class="project-tag" aria-hidden="true">React</span>
+                <span class="project-tag" aria-hidden="true">FastAPI</span>
+              </div>
+            </div>
+            <div class="marquee-row marquee-left">
+              <div class="marquee-track">
+                <span class="project-tag">SQL</span>
+                <span class="project-tag">Docker</span>
+                <span class="project-tag">Azure</span>
+                <span class="project-tag">Git</span>
+                <span class="project-tag" aria-hidden="true">SQL</span>
+                <span class="project-tag" aria-hidden="true">Docker</span>
+                <span class="project-tag" aria-hidden="true">Azure</span>
+                <span class="project-tag" aria-hidden="true">Git</span>
+                <span class="project-tag" aria-hidden="true">SQL</span>
+                <span class="project-tag" aria-hidden="true">Docker</span>
+                <span class="project-tag" aria-hidden="true">Azure</span>
+                <span class="project-tag" aria-hidden="true">Git</span>
+                <span class="project-tag" aria-hidden="true">SQL</span>
+                <span class="project-tag" aria-hidden="true">Docker</span>
+                <span class="project-tag" aria-hidden="true">Azure</span>
+                <span class="project-tag" aria-hidden="true">Git</span>
+                <span class="project-tag" aria-hidden="true">SQL</span>
+                <span class="project-tag" aria-hidden="true">Docker</span>
+                <span class="project-tag" aria-hidden="true">Azure</span>
+                <span class="project-tag" aria-hidden="true">Git</span>
+                <span class="project-tag" aria-hidden="true">SQL</span>
+                <span class="project-tag" aria-hidden="true">Docker</span>
+                <span class="project-tag" aria-hidden="true">Azure</span>
+                <span class="project-tag" aria-hidden="true">Git</span>
+              </div>
+            </div>
           </div>
-
-          <p class="meta-line">
-            Seeing is not always believing.
-          </p>
-          <p class="meta-line">
-            In everyday life, objects seem to carry fixed functions and forms — a chair is for sitting,
-            a bookshelf is for holding books, and everything appears self-evident. But what happens when
-            we take these familiar objects apart and put them back together differently? Might we discover
-            that their essence and purpose hold more possibilities than we assumed? This exhibition invites
-            you into a library turned upside down — one where chairs and bookshelves no longer follow
-            convention, and where you'll find books that are fictional, absurd, or entirely impossible to
-            realize.
-          </p>
-          <p class="meta-line">
-            By unsettling our understanding of what a "normal" object should look like, this exhibition
-            hopes to spark a new way of imagining the familiar. You may find yourself asking: are the
-            things we consider "normal" actually fact — or just a shared illusion we've agreed to believe?
-            This exhibition invites you to move between truth and fallacy, challenging your past standards
-            and judgments, and breaking down the bias against the "abnormal."
-          </p>
-          <p class="meta-line meta-line-soft">Part of the 9th NCCU Arts Festival — "Co-Weird Paradox," May 2025.</p>
-          <p class="meta-line meta-line-soft">Co-curated with Violette Chen.</p>
         </div>
 
-        <!--
-          Auto-loading flat gallery — photos and videos, all cropped to the same
-          size, in a 2-column grid. Add documentation by dropping it into
-          images/exhibition/ as the next number: 01.jpg, 02.jpg... or
-          01.mp4/.mov for video. Nothing here needs editing.
-        -->
-        <div class="exhibition-media">
-          <div class="grid-masonry auto-gallery-flat uniform-crop" data-base="images/exhibition/"></div>
+        <!-- Favorite Tools — real logo images from images/tools/. Drop in:
+             chatgpt.png, codex.png, claude.png, perplexity.png,
+             midjourney.png (square-ish, transparent background works
+             best). The list is repeated twice to give one "copy" enough
+             width to loop seamlessly (5 short chips alone would be
+             narrower than the card), then that copy is duplicated once
+             more for the marquee itself. -->
+        <div class="bento-card bento-card-tools reveal">
+          <span class="bento-label">Favorite Tools</span>
+          <div class="tools-marquee">
+            <div class="tools-track">
+              <span class="tool-chip">
+                <img class="tool-chip-icon" src="images/tools/chatgpt.png" alt="ChatGPT">
+                <span class="tool-chip-name">ChatGPT</span>
+              </span>
+              <span class="tool-chip">
+                <img class="tool-chip-icon" src="images/tools/codex.png" alt="Codex">
+                <span class="tool-chip-name">Codex</span>
+              </span>
+              <span class="tool-chip">
+                <img class="tool-chip-icon" src="images/tools/claude.png" alt="Claude">
+                <span class="tool-chip-name">Claude</span>
+              </span>
+              <span class="tool-chip">
+                <img class="tool-chip-icon" src="images/tools/perplexity.png" alt="Perplexity">
+                <span class="tool-chip-name">Perplexity</span>
+              </span>
+              <span class="tool-chip">
+                <img class="tool-chip-icon" src="images/tools/midjourney.png" alt="Midjourney">
+                <span class="tool-chip-name">Midjourney</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/chatgpt.png" alt="">
+                <span class="tool-chip-name">ChatGPT</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/codex.png" alt="">
+                <span class="tool-chip-name">Codex</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/claude.png" alt="">
+                <span class="tool-chip-name">Claude</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/perplexity.png" alt="">
+                <span class="tool-chip-name">Perplexity</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/midjourney.png" alt="">
+                <span class="tool-chip-name">Midjourney</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/chatgpt.png" alt="">
+                <span class="tool-chip-name">ChatGPT</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/codex.png" alt="">
+                <span class="tool-chip-name">Codex</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/claude.png" alt="">
+                <span class="tool-chip-name">Claude</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/perplexity.png" alt="">
+                <span class="tool-chip-name">Perplexity</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/midjourney.png" alt="">
+                <span class="tool-chip-name">Midjourney</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/chatgpt.png" alt="">
+                <span class="tool-chip-name">ChatGPT</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/codex.png" alt="">
+                <span class="tool-chip-name">Codex</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/claude.png" alt="">
+                <span class="tool-chip-name">Claude</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/perplexity.png" alt="">
+                <span class="tool-chip-name">Perplexity</span>
+              </span>
+              <span class="tool-chip" aria-hidden="true">
+                <img class="tool-chip-icon" src="images/tools/midjourney.png" alt="">
+                <span class="tool-chip-name">Midjourney</span>
+              </span>
+            </div>
+          </div>
+          <p class="bento-tools-caption">Uses</p>
+          <p class="bento-big-line">Check out my favorite tools</p>
         </div>
-      </article>
+
+      </div>
+
+      <!-- Row 2: What I Build / Beyond Code / How I Think, three equal cards -->
+      <div class="bento-row bento-row-bottom">
+
+        <!-- What I Build — headline word cycles vertically, links to Projects -->
+        <a class="bento-card bento-card-build reveal" href="projects.html">
+          <span class="bento-card-more">More &rarr;</span>
+          <span class="bento-label">What I Build</span>
+          <div class="build-cycle" id="build-cycle" aria-live="polite">
+            <span class="build-word is-active">AI Products</span>
+            <span class="build-word">Multimodal Systems</span>
+            <span class="build-word">Personalized Experiences</span>
+            <span class="build-word">Human-Centered Technology</span>
+            <span class="build-word">Research Prototypes</span>
+          </div>
+          <p class="build-tagline">I build at the intersection of people, technology, and everyday life.</p>
+          <div class="build-tags">
+            <span class="build-chip">Research</span>
+            <span class="build-chip">Product</span>
+            <span class="build-chip">Design</span>
+          </div>
+        </a>
+
+        <!-- How I Think — five steps light up in sequence, looping -->
+        <div class="bento-card bento-card-think reveal">
+          <span class="bento-label">How I Think</span>
+          <div class="think-track">
+            <div class="think-line-track">
+              <div class="think-line-bg"></div>
+              <div class="think-line-fill" id="think-fill"></div>
+            </div>
+            <div class="think-steps" id="think-steps">
+              <div class="think-step is-active" data-step="0">
+                <span class="think-dot"></span>
+                <span class="think-name">Observe</span>
+              </div>
+              <div class="think-step" data-step="1">
+                <span class="think-dot"></span>
+                <span class="think-name">Question</span>
+              </div>
+              <div class="think-step" data-step="2">
+                <span class="think-dot"></span>
+                <span class="think-name">Reframe</span>
+              </div>
+              <div class="think-step" data-step="3">
+                <span class="think-dot"></span>
+                <span class="think-name">Build</span>
+              </div>
+              <div class="think-step" data-step="4">
+                <span class="think-dot"></span>
+                <span class="think-name">Test</span>
+              </div>
+            </div>
+          </div>
+          <p class="think-desc" id="think-desc">
+            I start by noticing patterns and pain points in how people actually behave, not how they say they behave.
+          </p>
+        </div>
+
+        <!-- Beyond Code — 3 pieces in one horizontal filmstrip, drifting
+             sideways on an endless loop; links out to the painting/
+             photography page. -->
+        <a class="bento-card bento-card-beyond reveal" href="beyond-code.html">
+          <span class="bento-card-more">More &rarr;</span>
+          <span class="bento-label">Beyond Code</span>
+          <p class="bento-big-line">Painting &amp; photography, when I'm not shipping code.</p>
+          <div class="beyond-scatter">
+            <img class="beyond-photo beyond-photo-1" src="images/painting/01.jpg" alt="Oil painting">
+            <img class="beyond-photo beyond-photo-2" src="images/photography/portrait/series-3/01.jpg" alt="Portrait photography">
+            <img class="beyond-photo beyond-photo-3" src="images/photography/street/series-2/01.jpg" alt="Street photography">
+          </div>
+        </a>
+
+      </div>
 
     </div>
   </section>
 
-  <!-- ABOUT -->
-  <section id="about" class="about-section">
+  <!-- WORK EXPERIENCE -->
+  <section class="about-section">
 
-    <div class="about-top reveal">
-      <!-- Swap for a candid photo of yourself, ideally a cutout / transparent background -->
-      <div class="about-photo">
-        <img src="images/me.png" alt="Christine Deng">
-      </div>
-      <div class="about-intro">
-        <span class="eyebrow">About</span>
-        <h3 class="about-hi">Hi, I'm Christine!</h3>
-        <p class="about-bio">
-          I'm a Psychology and AI double major, and I like recording things
-          through different mediums — a camera, paint, whatever fits the moment.
-        </p>
+    <div class="about-experience reveal">
+      <h2 class="experience-heading">Work Experience</h2>
+
+      <div class="experience-timeline">
+
+        <div class="experience-row">
+          <div class="experience-row-left">
+            <p class="experience-company">Institute of Information Science, Academia Sinica</p>
+            <p class="experience-dates">July 2026 – Present</p>
+          </div>
+          <div class="experience-row-node is-current"></div>
+          <div class="experience-row-right">
+            <h3 class="experience-title">Research Assistant</h3>
+            <p class="experience-summary">
+              Brain-wave capture via BCI + VR rehabilitation environment simulation.
+            </p>
+          </div>
+        </div>
+
+        <div class="experience-row">
+          <div class="experience-row-left">
+            <p class="experience-company">Microsoft, Taipei, Taiwan</p>
+            <p class="experience-dates">Jan 2026 – June 2026</p>
+          </div>
+          <div class="experience-row-node"></div>
+          <div class="experience-row-right">
+            <h3 class="experience-title">AI Engineer Intern</h3>
+            <p class="experience-summary">
+              Designed telemetry pipelines for real-time monitoring across an enterprise AI web
+              system.
+            </p>
+          </div>
+        </div>
+
+        <div class="experience-row">
+          <div class="experience-row-left">
+            <p class="experience-company">Watsons TW, Taipei, Taiwan</p>
+            <p class="experience-dates">Feb 2026 – July 2026</p>
+          </div>
+          <div class="experience-row-node"></div>
+          <div class="experience-row-right">
+            <h3 class="experience-title">AI &amp; Data Science Intern</h3>
+            <p class="experience-summary">
+              Built a competitor-analysis crawler and data pipeline for retail intelligence.
+            </p>
+          </div>
+        </div>
+
+        <div class="experience-row">
+          <div class="experience-row-left">
+            <p class="experience-company">NCCU Hope Lab, Taipei, Taiwan</p>
+            <p class="experience-dates">Oct 2024 – Apr 2025</p>
+          </div>
+          <div class="experience-row-node"></div>
+          <div class="experience-row-right">
+            <h3 class="experience-title">Research Assistant</h3>
+            <p class="experience-summary">
+              Built an automated mental health assessment system that saves about 20 hours of
+              manual work a month.
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <div class="about-closing reveal">
-      <p class="about-thanks">Thanks for looking.</p>
-      <div class="contact-links">
-        <a href="mailto:christine921117@gmail.com">Email</a>
-        <a href="https://www.instagram.com/chriseee_____/" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <a href="https://www.linkedin.com/in/christine-deng-7006b7327/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </section>
+
+  <!-- COMPETITIONS — a horizontal logo row instead of the Work Experience
+       timeline above, since there are only a couple of entries so far. Drop
+       each competition's logo into images/competitions/ and add another
+       .competition-item alongside this one when there's a next entry. -->
+  <section class="about-section">
+
+    <div class="about-competitions reveal">
+      <h2 class="experience-heading">Competitions</h2>
+
+      <div class="competitions-row">
+        <div class="competition-item">
+          <img class="competition-logo" src="images/competitions/hotai-hackathon.png" alt="Hotai Hackathon">
+          <p class="competition-name">Hotai Hackathon</p>
+          <p class="competition-result">Top 20</p>
+          <p class="competition-date">2024</p>
+        </div>
+        <div class="competition-item">
+          <img class="competition-logo" src="images/competitions/ai-innovation-award.png" alt="AI Innovation Award">
+          <p class="competition-name">AI Innovation Award</p>
+          <p class="competition-date">2026</p>
+        </div>
       </div>
     </div>
 
   </section>
 
 </main>
+
+<footer class="site-footer reveal">
+  <p class="about-thanks">Thanks for looking.</p>
+  <div class="contact-links">
+    <a href="mailto:christine921117@gmail.com">Email</a>
+    <a href="https://github.com/christine1117" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="https://www.linkedin.com/in/christine-deng-7006b7327/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
+  <p class="footer-copyright">&copy; 2026 Christine Deng. All rights reserved.</p>
+</footer>
 
 <button class="to-top" aria-label="Back to top">&uarr;</button>
 

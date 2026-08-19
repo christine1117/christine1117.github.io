@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Christine Deng</title>
+<meta name="description" content="Christine (Chiao-Chieh) Deng — technical projects and research.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="accent-bar"></div>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-name" href="index.html">Christine Deng</a>
+    <nav class="nav-links">
+      <a href="index.html#about">About</a>
+      <a href="projects.html">Projects</a>
+      <a href="beyond-code.html">Beyond Code</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section">
+    <div class="section-head reveal">
+      <span class="eyebrow">Projects</span>
+    </div>
+
+    <div class="section-body">
+
+      <!-- Paper -->
+      <article class="category reveal">
+        <div class="category-intro">
+          <span class="category-tag category-tag-lg">Paper</span>
+        </div>
+        <div class="paper-card">
+          <img class="paper-cover" src="images/paper.png" alt="Attention Capture Is Not Detection cover">
+          <h3 class="paper-title">
+            <a href="https://arxiv.org/pdf/2608.13865" target="_blank" rel="noopener noreferrer">
+              Attention Capture Is Not Detection: A Two-Stage Account of How Humans Miss Localized
+              AI Image Edits
+            </a>
+          </h3>
+        </div>
+      </article>
+
+      <!-- Project -->
+      <article class="category reveal">
+        <div class="category-intro">
+          <span class="category-tag category-tag-lg">Featured Projects</span>
+        </div>
+
+        <div class="project-grid">
+
+              <!--
+                Compact card: full-bleed cover image at the top, then a
+                padded body with index/category, title, one-line blurb, and
+                tags. Click a card to open the full write-up (meta +
+                overview) in a modal — see initProjectModal() in js/main.js.
+                Drop each project's cover image into images/projects/ under
+                the filename referenced below.
+              -->
+              <!-- Plogi cover screenshot isn't in the repo yet — drop one into
+                   images/projects/plogi.jpg and it'll show up automatically. -->
+              <div class="project-card">
+                <img class="project-cover" src="images/projects/plogi.jpg" alt="Plogi — Photo Journal App">
+                <div class="project-card-body">
+                  <div class="project-card-label">
+                    <span class="project-index">01</span>
+                    <span class="project-index-sep">&mdash;&mdash;</span>
+                    <span class="project-category">Mobile App</span>
+                  </div>
+                  <h3 class="project-title">Plogi — Photo Journal App</h3>
+                  <p class="project-blurb">A full iOS app I designed, built, and shipped solo, from idea to the App Store.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">Swift</span>
+                    <span class="project-tag">SwiftUI</span>
+                    <span class="project-tag">Core ML</span>
+                    <span class="project-tag">StoreKit</span>
+                  </div>
+                </div>
+                <div class="project-details" hidden>
+                  <p class="project-meta">Live · iOS App Store</p>
+                  <p class="project-overview">
+                    I've always taken way too many photos on my phone: scattered screenshots, half-finished
+                    albums, memories I never actually looked back on. I wanted something that felt like an
+                    actual journal instead of a camera roll, but everything I tried was either too plain,
+                    just a grid of photos, or too complicated, professional collage tools with a steep
+                    learning curve. So I built Plogi myself. It lets you drag photos, videos, stickers, and
+                    text onto a page however you like, with an AI layout feature that steps in when you don't
+                    feel like designing. I designed and built the whole thing solo, from the first sketch to
+                    the App Store, including the AI background-removal feature and the subscription system.
+                  </p>
+                  <a class="project-link" href="https://apps.apple.com/us/app/plogi-photo-sticker-journal/id6780490741" target="_blank" rel="noopener noreferrer">View on the App Store &rarr;</a>
+                </div>
+              </div>
+
+              <div class="project-card">
+                <img class="project-cover" src="images/projects/mental-health.jpg" alt="Mental Health Assessment Automation Pipeline">
+                <div class="project-card-body">
+                  <div class="project-card-label">
+                    <span class="project-index">02</span>
+                    <span class="project-index-sep">&mdash;&mdash;</span>
+                    <span class="project-category">Automation</span>
+                  </div>
+                  <h3 class="project-title">Mental Health Assessment Automation Pipeline</h3>
+                  <p class="project-blurb">Saving the research team about 20 hours of manual work every month.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">Google Sheets API</span>
+                    <span class="project-tag">SMTP</span>
+                    <span class="project-tag">Pandas</span>
+                    <span class="project-tag">Matplotlib</span>
+                  </div>
+                </div>
+                <div class="project-details" hidden>
+                  <p class="project-meta">Completed · Mar 2025</p>
+                  <p class="project-overview">
+                    Built a comprehensive automation pipeline handling the complete workflow of mental
+                    health assessments for children's institutions. It automatically distributes surveys,
+                    collects responses in real time, calculates psychological scores (RFQ-C, RFQ-U, and
+                    distress indicators), and turns everything into clear, easy-to-read results. The system
+                    also features heatmap visualizations showing distress intensity across five indicators,
+                    line charts comparing individual trends with group averages, and automated email reports
+                    with warm, personalized feedback statements.
+                  </p>
+                  <a class="project-link" href="https://github.com/christine1117/Christine-Projects/tree/main/AI-Psychology/Mental%20Health%20Assessment%20Automation%20System" target="_blank" rel="noopener noreferrer">View on GitHub &rarr;</a>
+                </div>
+              </div>
+
+              <div class="project-card">
+                <img class="project-cover" src="images/projects/woosh-rag.png" alt="RAG Chatbot for WOOSH Navigation">
+                <div class="project-card-body">
+                  <div class="project-card-label">
+                    <span class="project-index">03</span>
+                    <span class="project-index-sep">&mdash;&mdash;</span>
+                    <span class="project-category">RAG System</span>
+                  </div>
+                  <h3 class="project-title">RAG Chatbot for WOOSH Navigation</h3>
+                  <p class="project-blurb">95% answer accuracy with source citations.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">RAG</span>
+                    <span class="project-tag">LangChain</span>
+                    <span class="project-tag">FAISS</span>
+                    <span class="project-tag">OpenAI API</span>
+                    <span class="project-tag">FastAPI</span>
+                  </div>
+                </div>
+                <div class="project-details" hidden>
+                  <p class="project-meta">Completed · Oct 2025</p>
+                  <p class="project-overview">
+                    My partner and I developed a RAG-based chatbot designed to help users clearly understand
+                    how WOOSH navigation works, a Berkeley SkyDeck-backed startup focused on using commuter
+                    vehicles to deliver mid-weight goods. We also built the entire UI and connected it to a
+                    FastAPI backend, so users can interact with the chatbot seamlessly. It provides concise,
+                    well-cited answers about workflows, features, and operations, making the platform much
+                    easier to navigate.
+                  </p>
+                </div>
+              </div>
+
+              <div class="project-card">
+                <img class="project-cover" src="images/projects/agentic-ai.jpg" alt="Agentic AI for Mental Health Scenarios">
+                <div class="project-card-body">
+                  <div class="project-card-label">
+                    <span class="project-index">04</span>
+                    <span class="project-index-sep">&mdash;&mdash;</span>
+                    <span class="project-category">Agentic AI</span>
+                  </div>
+                  <h3 class="project-title">Agentic AI for Mental Health Scenarios</h3>
+                  <p class="project-blurb">
+                    Achieved stable multi-dimensional scoring across 7 behavioral metrics in
+                    crisis-intervention mental health evaluations.
+                  </p>
+                  <div class="project-tags">
+                    <span class="project-tag">Mental Health</span>
+                    <span class="project-tag">PersonaGym</span>
+                    <span class="project-tag">LLM Evaluation</span>
+                    <span class="project-tag">Agentic AI</span>
+                  </div>
+                </div>
+                <div class="project-details" hidden>
+                  <p class="project-meta">Completed · Nov 2025</p>
+                  <p class="project-overview">
+                    As part of UC Berkeley CS 194: Agentic AI, my group members and I extended the
+                    PersonaGym framework into a specialized evaluation pipeline for mental-health-oriented
+                    agent systems. The system benchmarks an agent's ability to conduct empathetic dialogues,
+                    detect emotional distress cues, and deliver safe, supportive responses. We built
+                    scenario-driven evaluation metrics across empathy, safety, and support dimensions, and
+                    implemented a full A2A testing loop to automatically score agent behaviors under
+                    controlled conditions.
+                  </p>
+                  <a class="project-link" href="https://github.com/christine1117/agentic-ai" target="_blank" rel="noopener noreferrer">View on GitHub &rarr;</a>
+                </div>
+              </div>
+
+              <!-- Cover screenshot isn't in the repo yet — drop one into
+                   images/projects/youtube.png and it'll show up automatically. -->
+              <div class="project-card">
+                <img class="project-cover" src="images/projects/youtube.png" alt="Creator Insight Engine">
+                <div class="project-card-body">
+                  <div class="project-card-label">
+                    <span class="project-index">05</span>
+                    <span class="project-index-sep">&mdash;&mdash;</span>
+                    <span class="project-category">Machine Learning</span>
+                  </div>
+                  <h3 class="project-title">Creator Insight Engine</h3>
+                  <p class="project-blurb">Finding the hidden gems before they go viral.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">CatBoost</span>
+                    <span class="project-tag">LSTM</span>
+                    <span class="project-tag">DBSCAN</span>
+                    <span class="project-tag">Python</span>
+                  </div>
+                </div>
+                <div class="project-details" hidden>
+                  <p class="project-meta">Completed · June 2025</p>
+                  <p class="project-overview">
+                    Built with my project partner to help brands spot high-potential YouTube travel
+                    creators before they blow up, instead of just chasing whoever already has the most
+                    subscribers. We pulled historical Social Blade data and used CatBoost and LSTM models
+                    to forecast next-month subscriber and view growth, then layered in DBSCAN clustering to
+                    group creators by engagement patterns. The output is a ranked "Decision Index" that
+                    surfaces undervalued creators with strong growth momentum, so brands can catch rising
+                    stars while collaboration costs are still low.
+                  </p>
+                  <a class="project-link" href="https://github.com/joanhsieh17-gif/Creator-Insight-Engine" target="_blank" rel="noopener noreferrer">View on GitHub &rarr;</a>
+                </div>
+              </div>
+
+              <!-- Cover photo isn't in the repo yet — drop one into
+                   images/projects/hci.png and it'll show up automatically.
+                   Meta date below is a placeholder — swap in the real one. -->
+              <div class="project-card">
+                <img class="project-cover" src="images/projects/hci.png" alt="Slow Design: Reviving Lei Cha Through Motion">
+                <div class="project-card-body">
+                  <div class="project-card-label">
+                    <span class="project-index">06</span>
+                    <span class="project-index-sep">&mdash;&mdash;</span>
+                    <span class="project-category">Interaction Design</span>
+                  </div>
+                  <h3 class="project-title">Slow Design: Reviving Lei Cha Through Motion</h3>
+                  <p class="project-blurb">Turning the repetitive motion of grinding tea into personalized, collectible art.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">Slow Design</span>
+                    <span class="project-tag">HCI</span>
+                    <span class="project-tag">Sensors</span>
+                    <span class="project-tag">Computer Vision</span>
+                  </div>
+                </div>
+                <div class="project-details" hidden>
+                  <p class="project-meta">Presented at OpenHCI · 2025</p>
+                  <p class="project-overview">
+                    For OpenHCI, my team explored "slow design" through the lens of lei cha (擂茶), a
+                    traditional Hakka tea-grinding ritual that's losing its meaning as mechanization strips
+                    away the time, effort, and intention once poured into every grain of tea powder. We built
+                    an interactive installation that uses sensors to capture each participant's grinding
+                    force, speed, and path, then translates that motion into a personalized painting: brush
+                    strokes, colors, and texture that reflect how they moved. A camera identifies who's
+                    grinding so multiple people, often family members, can co-create one piece together,
+                    turning a repetitive, almost invisible task into a shared, collectible artwork. The goal
+                    was to make people feel the weight of the labor and the warmth of the relationship
+                    behind it, instead of letting efficiency erase it.
+                  </p>
+                  <!-- Drop the diagram into images/projects/hci-sa.png. -->
+                  <img class="project-detail-image" src="images/projects/hci-sa.png" alt="System architecture diagram for the lei cha slow design installation">
+                </div>
+              </div>
+
+            </div>
+          </article>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- Shared modal for the project cards above — populated by JS on click. -->
+<div class="project-modal" id="project-modal" hidden>
+  <div class="project-modal-backdrop" data-modal-close></div>
+  <div class="project-modal-panel">
+    <button type="button" class="project-modal-close" data-modal-close aria-label="Close">&times;</button>
+    <div class="project-modal-body"></div>
+  </div>
+</div>
+
+<footer class="site-footer reveal">
+  <p class="about-thanks">Thanks for looking.</p>
+  <div class="contact-links">
+    <a href="mailto:christine921117@gmail.com">Email</a>
+    <a href="https://github.com/christine1117" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="https://www.linkedin.com/in/christine-deng-7006b7327/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
+  <p class="footer-copyright">&copy; 2026 Christine Deng. All rights reserved.</p>
+</footer>
+
+<button class="to-top" aria-label="Back to top">&uarr;</button>
+
+<script src="js/gallery-manifest.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
